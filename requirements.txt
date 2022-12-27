@@ -1,4 +1,4 @@
-boto3~=1.26.37
-s3fs~=2022.11.0
-requests~=2.28.1
-streamlit~=1.16.0
+boto3
+s3fs
+requests
+streamlit
