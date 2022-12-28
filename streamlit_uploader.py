@@ -2,7 +2,7 @@ import streamlit as st
 import boto3
 import s3fs
 import os
-import requests
+from streamlit_request import request_to_server
 
 
 s3 = boto3.client('s3',
@@ -27,37 +27,6 @@ def files_to_bucket(obj, bucket, s3_file, folder_name):
 uploaded_files = st.file_uploader('Choose images to upload',
                                   accept_multiple_files=True,
                                   type=['png', 'jpg', 'jpeg', 'heif'])  # add more types ?
-
-
-def request_to_server(project_n):
-    cookies = {'csrftoken': os.getenv('csrftoken')}
-
-    headers = {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'Accept-Language': 'uk,uk-UA;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Cache-Control': 'max-age=0',
-        'Connection': 'keep-alive',
-
-        'DNT': '1',
-        'Origin': 'https://dmytro66.pythonanywhere.com',
-        'Referer': 'https://dmytro66.pythonanywhere.com/',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'same-origin',
-        'Sec-Fetch-User': '?1',
-        'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-        'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-    }
-
-    data = {
-        'csrfmiddlewaretoken': os.getenv('csrfmiddlewaretoken'),
-        'bucket_path': project_n,
-    }
-    response = requests.post('https://dmytro66.pythonanywhere.com/', cookies=cookies, headers=headers, data=data)
-    return response.text
 
 
 if uploaded_files is not None:
