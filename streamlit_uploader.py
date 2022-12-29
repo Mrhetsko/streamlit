@@ -31,9 +31,9 @@ uploaded_files = st.file_uploader('Choose images to upload',
                                   type=['png', 'jpg', 'jpeg', 'heif'])  # add more types ?
 
 
-def download_model(project):
+def download_model(bucket, project):
     """Create the button to download trained point_cloud.ply from AWS bucket to computer"""
-    with fs.open(f'/{getenv("aws_bucket")}/pointcloud/{project}/point_cloud.ply', 'rb') as f:
+    with fs.open(f'/{bucket}/pointcloud/{project}/point_cloud.ply', 'rb') as f:
         download_button = st.download_button(label='Download model',
                                              data=f.read(),
                                              file_name=f'{project}.ply'
@@ -75,4 +75,4 @@ project_names = [pr_name.split('/')[-2] for pr_name in list_of_ply]
 
 input_project_name = st.selectbox('Choose', (name for name in project_names))
 if input_project_name:
-    download_model(input_project_name)
+    download_model(aws_bucket, input_project_name)
